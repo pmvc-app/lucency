@@ -4,7 +4,7 @@
 [![License](https://poser.pugx.org/pmvc-app/lucency/license)](https://packagist.org/packages/pmvc-app/lucency)
 [![Total Downloads](https://poser.pugx.org/pmvc-app/lucency/downloads)](https://packagist.org/packages/pmvc-app/lucency) 
 
-# PMVC lucency growth hacking app 
+PMVC lucency growth hacking app 
 ===============
 
 ## Install with Composer
