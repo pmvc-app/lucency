@@ -1,0 +1,18 @@
+{
+    "name": "pmvc-app/lucency",
+    "description": "Lucency for Big Data",
+    "type": "library",
+    "keywords": ["lucy", "big data", "growth hacking", "pmvc", "pmvc-app"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hill",
+            "email": "hill@kimo.com"
+        }
+    ],
+    "require": {
+        "pmvc/pmvc": "*",
+        "pmvc-plugin/controller": "*"
+    },
+    "minimum-stability": "dev"
+}
