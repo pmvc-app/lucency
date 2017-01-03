@@ -12,7 +12,8 @@
     ],
     "require": {
         "pmvc/pmvc": "*",
-        "pmvc-plugin/controller": "*"
+        "pmvc-plugin/controller": "*",
+        "pmvc-plugin/html": "*"
     },
     "minimum-stability": "dev"
 }
