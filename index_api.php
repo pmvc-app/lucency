@@ -1,9 +1,14 @@
 <?php
-namespace HTLoveStory;
+namespace PMVC\App\lucency;
 
 ${_INIT_CONFIG}[_CLASS] = '\PMVC\Action';
 
 $yo=\PMVC\plug('yo');
-$yo->get('/lucency', function($m, $f){
-
+$yo->post('/lucency/view', function($m, $f){
+    $go = $m['dump'];
+    $store = \PMVC\plug('lucency_store');
+    $result = $store->storeView($f);
+    $go->set('data', $result);
+    $go->set('type', 'view');
+    return $go;
 });
