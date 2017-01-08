@@ -13,7 +13,9 @@
     "require": {
         "pmvc/pmvc": "*",
         "pmvc-plugin/controller": "*",
-        "pmvc-plugin/html": "*"
+        "pmvc-plugin/view_html": "*",
+        "pmvc-plugin/getenv": "*",
+        "pmvc-plugin/curl": "*"
     },
     "minimum-stability": "dev"
 }
