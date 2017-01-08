@@ -15,7 +15,8 @@
         "pmvc-plugin/controller": "*",
         "pmvc-plugin/view_html": "*",
         "pmvc-plugin/getenv": "*",
-        "pmvc-plugin/curl": "*"
+        "pmvc-plugin/curl": "*",
+        "pmvc-theme/lucency_html": "*"
     },
     "minimum-stability": "dev"
 }
