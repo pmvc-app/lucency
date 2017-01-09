@@ -24,6 +24,12 @@ class Lucency extends PMVC\Action
     static function index ($m, $f) {
        ignore_user_abort(true);
        $go = $m['view'];
+       $pixelUrl = 'https://www.facebook.com/tr?ev=PageView&noscript=1';
+       $pixelUrl = \PMVC\plug('url')->getUrl($pixelUrl);
+       $pixelUrl->query->id=\PMVC\getOption('fbPixel');
+       $pixelUrl->query->r = time();
+       $pixelUrl->query->dl = $f['url'];
+       $go->set('fbPixelUrl', (string)$pixelUrl);
        return $go;
     }
 
