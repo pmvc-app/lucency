@@ -23,5 +23,10 @@ class LucencyAdmin extends PMVC\Action
             $counts[$d] = count($keys);
         }
         \PMVC\d($counts);
+        $last5 = $vDb->hrscan('','',5);
+        foreach($last5 as $u) {
+            $u = \PMVC\fromJson($u);
+            \PMVC\d(\PMVC\value($u,['server','HTTP_USER_AGENT']));
+        }
     }
 }
