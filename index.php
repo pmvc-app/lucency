@@ -9,38 +9,60 @@ ${_INIT_CONFIG}[_INIT_BUILDER] = $b;
 
 $b->addAction('index');
 $b->addAction('view');
-$b->addAction('storeView');
+$b->addAction('store');
+$b->addAction('action');
 
-
-$b->addForward('view', array(
+$b->addForward('view', [ 
     _PATH => 'lucencyView'
     ,_TYPE => 'view'
-    ,_ACTION=> 'storeView'
-));
+    ,_ACTION=> 'store'
+]);
+
+$b->addForward('action', [ 
+    _TYPE => 'redirect'
+    ,_ACTION=> 'store'
+]);
+
+// pixelUrl
+const pixelUrl = 'https://www.facebook.com/tr?noscript=1';
 
 
 class Lucency extends PMVC\Action
 {
     static function index ($m, $f) {
+        return null;
+    }
+
+    static function initFbPixel($f)
+    {
        ignore_user_abort(true);
-       $go = $m['view'];
-       $pixelUrl = 'https://www.facebook.com/tr?ev=PageView&noscript=1';
+       $pixelUrl = pixelUrl;
        $pixelUrl = \PMVC\plug('url')->getUrl($pixelUrl);
-       $pixelUrl->query->id=\PMVC\getOption('fbPixel');
-       $pixelUrl->query->r = time();
-       $pixelUrl->query->dl = $f['url'];
+       $query = $pixelUrl->query;
+       $query->id = \PMVC\getOption('fbPixel');
+       $query->r = time();
+       $query->dl = $f['url'];
+       return $pixelUrl;
+    }
+
+    static function view ($m, $f) {
+       $go = $m['view'];
+       $pixelUrl = self::initFbPixel($f);
+       $query = $pixelUrl->query;
+       $query->ev = 'PageView';
        $go->set('fbPixelUrl', (string)$pixelUrl);
+       \PMVC\plug(_RUN_APP)['type'] = 'view';
        return $go;
     }
 
-    static function storeView ($m, $f) {
+    static function store ($m, $f) {
         $api = \PMVC\getOption('middlewareHost');
-        $url = $api. '/lucency/view';
+        $url = $api. '/lucency/'.\PMVC\plug(_RUN_APP)['type'];
         $env = \PMVC\plug('getenv');
         $request = \PMVC\plug('controller')->getRequest();
         $curl = \PMVC\plug('curl'); 
         $curl->post($url, function($r){
-            // \PMVC\d($r->body);
+             \PMVC\d($r->body);
         }, [
             'client'=> array_merge($_REQUEST, \PMVC\get($request)),
             'params'=> [
@@ -52,4 +74,14 @@ class Lucency extends PMVC\Action
         return;
     }
 
+    static function action ($m, $f) {
+       $go = $m['action'];
+       $pixelUrl = self::initFbPixel($f);
+       $query = $pixelUrl->query;
+       $query->ev = \PMVC\get($f, 'action', 'ViewContent');
+       $query->cd = \PMVC\get($f, 'params');
+       $go->setPath($pixelUrl);
+       \PMVC\plug(_RUN_APP)['type'] = 'action';
+       return $go;
+    }
 }
