@@ -49,7 +49,7 @@ class lucency_store extends \PMVC\PlugIn
         $mDb = $this['mappingDb'];
         $newKey = $vDb->getNewKey($data['site']);
         if (isset($mDb[$pvid])) {
-            $mData = \PMVC\fromJson($mDb[$pvid]);
+            $mData = (array)\PMVC\fromJson($mDb[$pvid]);
         } else {
             $mData = [];
         }
@@ -76,7 +76,7 @@ class lucency_store extends \PMVC\PlugIn
         if (!isset($mDb[$pvid])) {
             throw new DomainException('[Lucency store::storeAction] pvid not exists in mapping db');
         }
-        $mData = \PMVC\fromJson($mDb[$pvid]);
+        $mData = (array)\PMVC\fromJson($mDb[$pvid]);
         $mData['action'] = \PMVC\get($mData, 'action', []);
         $mData['action'][] = $newKey; 
         $aDb[$newKey] = json_encode($data['data']);

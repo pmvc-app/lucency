@@ -31,6 +31,7 @@ class LucyTest extends PHPUnit_Framework_TestCase
     {
         $c = \PMVC\plug('controller');
         $c->setApp($this->_app);
+        $c->setAppAction('view');
         $c->plugApp(['../']);
         $result = $c->process();
         $actual = \PMVC\value($result,[0])->get('text');

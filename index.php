@@ -19,7 +19,7 @@ $b->addForward('view', [
 ]);
 
 $b->addForward('action', [ 
-    _TYPE => 'redirect'
+    _TYPE => 'view'
     ,_ACTION=> 'store'
 ]);
 
@@ -62,7 +62,7 @@ class Lucency extends PMVC\Action
         $request = \PMVC\plug('controller')->getRequest();
         $curl = \PMVC\plug('curl'); 
         $curl->post($url, function($r){
-             \PMVC\d($r->body);
+             //\PMVC\d($r->body);
         }, [
             'client'=> array_merge($_REQUEST, \PMVC\get($request)),
             'params'=> [
@@ -78,9 +78,9 @@ class Lucency extends PMVC\Action
        $go = $m['action'];
        $pixelUrl = self::initFbPixel($f);
        $query = $pixelUrl->query;
-       $query->ev = \PMVC\get($f, 'action', 'ViewContent');
+       $query->ev = \PMVC\value($f, ['params', 'action'], 'ViewContent');
        $query->cd = \PMVC\get($f, 'params');
-       $go->setPath($pixelUrl);
+       $go->set('fbPixelUrl', (string)$pixelUrl);
        \PMVC\plug(_RUN_APP)['type'] = 'action';
        return $go;
     }
