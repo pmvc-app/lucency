@@ -50,6 +50,7 @@ class Lucency extends PMVC\Action
        $pixelUrl = self::initFbPixel($f);
        $query = $pixelUrl->query;
        $query->ev = 'PageView';
+       $query->cd = \PMVC\get($f, 'params');
        $go->set('fbPixelUrl', (string)$pixelUrl);
        \PMVC\plug(_RUN_APP)['type'] = 'view';
        return $go;
