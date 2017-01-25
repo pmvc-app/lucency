@@ -23,9 +23,10 @@ $b->addForward('action', [
     ,_ACTION=> 'store'
 ]);
 
-// pixelUrl
-const pixelUrl = 'https://www.facebook.com/tr?noscript=1';
-
+// Third party config 
+const FB_PIXEL_URL = 'https://www.facebook.com/tr?noscript=1';
+const GTAG_CUSTOM_EVENT = 'customEvent';
+const GTAG_CUSTOM_VIEW = 'customView';
 
 class Lucency extends PMVC\Action
 {
@@ -36,7 +37,7 @@ class Lucency extends PMVC\Action
     static function initFbPixel($f)
     {
        ignore_user_abort(true);
-       $pixelUrl = pixelUrl;
+       $pixelUrl = FB_PIXEL_URL;
        $pixelUrl = \PMVC\plug('url')->getUrl($pixelUrl);
        $query = $pixelUrl->query;
        $query->id = \PMVC\getOption('fbPixel');
@@ -53,6 +54,7 @@ class Lucency extends PMVC\Action
        $query->cd = \PMVC\get($f, 'params');
        $go->set('fbPixelUrl', (string)$pixelUrl);
        $go->set('gtagId', \PMVC\getOption('gtagId'));
+       $go->set('gtagParams', ['event'=>GTAG_CUSTOM_VIEW]);
        \PMVC\plug(_RUN_APP)['type'] = 'view';
        return $go;
     }
@@ -91,7 +93,7 @@ class Lucency extends PMVC\Action
            'label'=>json_encode($params),
            'category'=>\PMVC\get($params,'category'),
            'action'=>$action,
-           'event'=>'customEvent'
+           'event'=>GTAG_CUSTOM_EVENT
        ]);
        \PMVC\plug(_RUN_APP)['type'] = 'action';
        return $go;
