@@ -52,6 +52,7 @@ class Lucency extends PMVC\Action
        $query->ev = 'PageView';
        $query->cd = \PMVC\get($f, 'params');
        $go->set('fbPixelUrl', (string)$pixelUrl);
+       $go->set('gtagId', \PMVC\getOption('gtagId'));
        \PMVC\plug(_RUN_APP)['type'] = 'view';
        return $go;
     }
@@ -79,9 +80,19 @@ class Lucency extends PMVC\Action
        $go = $m['action'];
        $pixelUrl = self::initFbPixel($f);
        $query = $pixelUrl->query;
-       $query->ev = \PMVC\value($f, ['params', 'action'], 'ViewContent');
-       $query->cd = \PMVC\get($f, 'params');
+       $params = \PMVC\get($f, 'params');
+       $action = \PMVC\get($params, 'action', 'ViewContent');
+       $query->ev = $action;
+       $query->cd = $params;
        $go->set('fbPixelUrl', (string)$pixelUrl);
+       $go->set('gtagId', \PMVC\getOption('gtagId'));
+       $go->set('gtagParams', [
+           'value'=>\PMVC\get($params,'value'),
+           'label'=>json_encode($params),
+           'category'=>\PMVC\get($params,'category'),
+           'action'=>$action,
+           'event'=>'customEvent'
+       ]);
        \PMVC\plug(_RUN_APP)['type'] = 'action';
        return $go;
     }
