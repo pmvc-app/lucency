@@ -28,7 +28,8 @@ const FB_PIXEL_URL = 'https://www.facebook.com/tr?noscript=1';
 
 class Lucency extends PMVC\Action
 {
-    static function index ($m, $f) {
+    static function index ($m, $f)
+    {
         return null;
     }
 
@@ -44,20 +45,8 @@ class Lucency extends PMVC\Action
        return $pixelUrl;
     }
 
-    static function view ($m, $f) {
-       $go = $m['view'];
-       $pixelUrl = self::initFbPixel($f);
-       $query = $pixelUrl->query;
-       $query->ev = 'PageView';
-       $query->cd = \PMVC\get($f, 'params');
-       $go->set('fbPixelUrl', (string)$pixelUrl);
-       \PMVC\plug('lucency_google_tag')
-            ->cookViewForward($go, $f );
-       \PMVC\plug(_RUN_APP)['type'] = 'view';
-       return $go;
-    }
-
-    static function store ($m, $f) {
+    static function store ($m, $f)
+    {
         $api = \PMVC\getOption('middlewareHost');
         $url = $api. '/lucency/'.\PMVC\plug(_RUN_APP)['type'];
         $env = \PMVC\plug('getenv');
@@ -76,7 +65,27 @@ class Lucency extends PMVC\Action
         return;
     }
 
-    static function action ($m, $f) {
+    static function getBuckets()
+    {
+
+    }
+
+    static function view ($m, $f)
+    {
+       $go = $m['view'];
+       $pixelUrl = self::initFbPixel($f);
+       $query = $pixelUrl->query;
+       $query->ev = 'PageView';
+       $query->cd = \PMVC\get($f, 'params');
+       $go->set('fbPixelUrl', (string)$pixelUrl);
+       \PMVC\plug('lucency_google_tag')
+            ->cookViewForward($go, $f );
+       \PMVC\plug(_RUN_APP)['type'] = 'view';
+       return $go;
+    }
+
+    static function action ($m, $f)
+    {
        $go = $m['action'];
        $pixelUrl = self::initFbPixel($f);
        $query = $pixelUrl->query;
