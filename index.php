@@ -67,11 +67,20 @@ class Lucency extends PMVC\Action
 
     static function getBuckets()
     {
-
+        $bucketKey = 'HTTP_X_BUCKET_TESTS';
+        $buckets = \PMVC\plug('getenv')->get($bucketKey);
+        $buckets = array_diff(explode(',',$buckets),['']);
+        $results = [];
+        foreach ($buckets as $b) {
+            $bkey = preg_split('/[\d|N]/', $b);
+            $results[$bkey[0]] = $b; 
+        }
+        return $results;
     }
 
     static function view ($m, $f)
     {
+       $f['buckets'] = self::getBuckets();
        $go = $m['view'];
        $pixelUrl = self::initFbPixel($f);
        $query = $pixelUrl->query;
@@ -86,6 +95,7 @@ class Lucency extends PMVC\Action
 
     static function action ($m, $f)
     {
+       $f['buckets'] = self::getBuckets();
        $go = $m['action'];
        $pixelUrl = self::initFbPixel($f);
        $query = $pixelUrl->query;
