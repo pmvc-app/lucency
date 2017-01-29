@@ -45,7 +45,7 @@ class lucency_google_tag extends \PMVC\Plugin
     {
        $bucketParams = $this->assignBucket($form);
        $params = \PMVC\get($form, 'params', []);
-       $forward->set('gtagId', \PMVC\getOption('gtagId'));
+       // $forward->set('gtagId', \PMVC\getOption('gtagId'));
        $forward->set('gtagParams', array_merge(
             $params,
             $bucketParams,
