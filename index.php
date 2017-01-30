@@ -23,9 +23,6 @@ $b->addForward('action', [
     ,_ACTION=> 'store'
 ]);
 
-// Third party config 
-const FB_PIXEL_URL = 'https://www.facebook.com/tr?noscript=1';
-
 class Lucency extends PMVC\Action
 {
     static function index ($m, $f)
@@ -33,16 +30,29 @@ class Lucency extends PMVC\Action
         return null;
     }
 
-    static function initFbPixel($f)
+    static function assignBucket(array $buckets)
+    {
+        $results = [];
+        $lucencyBuckets = \PMVC\get(\PMVC\getoption('lucency'),'buckets');
+        if (empty($lucencyBuckets)) {
+            return $results;
+        }
+        foreach ($buckets as $k=>$v) {
+            $key = $lucencyBuckets[$k];
+            if ($key) {
+                $results[$key] = $v;
+            }
+        }
+        return $results;
+    }
+
+    static function getTags($f)
     {
        ignore_user_abort(true);
-       $pixelUrl = FB_PIXEL_URL;
-       $pixelUrl = \PMVC\plug('url')->getUrl($pixelUrl);
-       $query = $pixelUrl->query;
-       $query->id = \PMVC\getOption('fbPixel');
-       $query->r = time();
-       $query->dl = $f['url'];
-       return $pixelUrl;
+       $f['buckets'] = self::assignBucket(self::getBuckets());
+       $lucencyOption = \PMVC\getOption('lucency');
+       $tags = \PMVC\get($lucencyOption,'tags');
+       return $tags;
     }
 
     static function store ($m, $f)
@@ -80,32 +90,44 @@ class Lucency extends PMVC\Action
 
     static function view ($m, $f)
     {
-       $f['buckets'] = self::getBuckets();
+       $tags = self::getTags($f);
        $go = $m['view'];
-       $pixelUrl = self::initFbPixel($f);
-       $query = $pixelUrl->query;
-       $query->ev = 'PageView';
-       $query->cd = \PMVC\get($f, 'params');
-       $go->set('fbPixelUrl', (string)$pixelUrl);
-       \PMVC\plug('lucency_google_tag')
-            ->cookViewForward($go, $f );
+       $enabled = [];
+       foreach ($tags as $tag) {
+            if (empty($tag['enabled'])) {
+                continue;
+            }
+            $plug = \PMVC\plug('lucency_'.\PMVC\get($tag,'name'));
+            $plug['option'] = $tag;
+            $plug->cookViewForward($go, $f);
+            $enabled[] = $tag['name'];
+       }
+       $go->set('enabled', $enabled);
        \PMVC\plug(_RUN_APP)['type'] = 'view';
        return $go;
     }
 
     static function action ($m, $f)
     {
-       $f['buckets'] = self::getBuckets();
+       $tags = self::getTags($f);
        $go = $m['action'];
-       $pixelUrl = self::initFbPixel($f);
-       $query = $pixelUrl->query;
-       $params = \PMVC\get($f, 'params');
-       $action = \PMVC\get($params, 'action', 'ViewContent');
-       $query->ev = $action;
-       $query->cd = $params;
-       $go->set('fbPixelUrl', (string)$pixelUrl);
-       \PMVC\plug('lucency_google_tag')
-            ->cookActionForward($go, $f, $action);
+       $action = \PMVC\value(
+            $f,
+            ['params','action'],
+            'ViewContent'
+       );
+       $go->set('action', $action);
+       $enabled = [];
+       foreach ($tags as $tag) {
+            if (empty($tag['enabled'])) {
+                continue;
+            }
+            $plug = \PMVC\plug('lucency_'.\PMVC\get($tag,'name'));
+            $plug['option'] = $tag;
+            $plug->cookActionForward($go, $f, $action);
+            $enabled[] = $tag['name'];
+       }
+       $go->set('enabled', $enabled);
        \PMVC\plug(_RUN_APP)['type'] = 'action';
        return $go;
     }
