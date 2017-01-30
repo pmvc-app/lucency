@@ -51,7 +51,7 @@ class Lucency extends PMVC\Action
        ignore_user_abort(true);
        $f['buckets'] = self::assignBucket(self::getBuckets());
        $lucencyOption = \PMVC\getOption('lucency');
-       $tags = \PMVC\get($lucencyOption,'tags');
+       $tags = \PMVC\get($lucencyOption,'tags', []);
        return $tags;
     }
 
