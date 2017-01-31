@@ -9,33 +9,32 @@ const GTAG_CUSTOM_VIEW = 'customView';
 
 class lucency_google_tag extends \PMVC\Plugin
 {
-    public function cookViewForward($forward, $form)
+    public function initCook($forward, $form)
     {
-       $bucketParams = $form['buckets'];
        $params = \PMVC\get($form, 'params', []);
-       $forward->set('gtagId', \PMVC\value($this,['option','id']));
-       $forward->set('gtagParams', array_merge(
+       $bucketParams = \PMVC\get($form, 'buckets', []);
+       $forward->set('gtagEnv', \PMVC\value($this, ['option', 'env']));
+       return array_merge(
             $params,
             $bucketParams,
             [
                'label'=>\PMVC\get($params, 'label', json_encode($params) ),
-               'event'=>\PMVC\get($params, 'event', GTAG_CUSTOM_VIEW)
+               'event'=>\PMVC\get($params, 'event', GTAG_CUSTOM_VIEW),
             ]
-       ));
+       );
+    }
+
+    public function cookViewForward($forward, $form)
+    {
+       $params = $this->initCook($forward, $form);
+       $forward->set('gtagId', \PMVC\value($this,['option','id']));
+       $forward->set('gtagParams', $params);
     }
 
     public function cookActionForward($forward, $form, $action)
     {
-       $bucketParams = $form['buckets'];
-       $params = \PMVC\get($form, 'params', []);
-       $forward->set('gtagParams', array_merge(
-            $params,
-            $bucketParams,
-            [
-               'action'=>$action,
-               'label'=>\PMVC\get($params, 'label', json_encode($params) ),
-               'event'=>\PMVC\get($params, 'event', GTAG_CUSTOM_EVENT)
-            ]
-       ));
+       $params = $this->initCook($forward, $form);
+       $params['action'] = $action;
+       $forward->set('gtagParams', $params);
     }
 }
