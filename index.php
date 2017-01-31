@@ -46,10 +46,11 @@ class Lucency extends PMVC\Action
         return $results;
     }
 
-    static function getTags($f)
+    static function getTags($go, $f)
     {
        ignore_user_abort(true);
        $f['buckets'] = self::assignBucket(self::getBuckets());
+       $go->set('b', \PMVC\get($_COOKIE, 'b'));
        $lucencyOption = \PMVC\getOption('lucency');
        $tags = \PMVC\get($lucencyOption,'tags', []);
        return $tags;
@@ -90,8 +91,8 @@ class Lucency extends PMVC\Action
 
     static function view ($m, $f)
     {
-       $tags = self::getTags($f);
        $go = $m['view'];
+       $tags = self::getTags($go, $f);
        $enabled = [];
        foreach ($tags as $tag) {
             if (empty($tag['enabled'])) {
@@ -109,8 +110,8 @@ class Lucency extends PMVC\Action
 
     static function action ($m, $f)
     {
-       $tags = self::getTags($f);
        $go = $m['action'];
+       $tags = self::getTags($go, $f);
        $action = \PMVC\value(
             $f,
             ['params','action'],
