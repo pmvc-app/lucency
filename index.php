@@ -23,6 +23,10 @@ $b->addForward('action', [
     ,_ACTION=> 'store'
 ]);
 
+const LUCENCY_EVENT_VIEW = 'lucencyEventView';
+const LUCENCY_EVENT_ACTION = 'lucencyEventAction';
+const LUCENCY_DEFAULT_ACTION = 'ViewContent';
+
 class Lucency extends PMVC\Action
 {
     static function index ($m, $f)
@@ -91,45 +95,56 @@ class Lucency extends PMVC\Action
 
     static function view ($m, $f)
     {
-       $go = $m['view'];
-       $tags = self::getTags($go, $f);
-       $enabled = [];
-       foreach ($tags as $tag) {
-            if (empty($tag['enabled'])) {
-                continue;
-            }
-            $plug = \PMVC\plug('lucency_'.\PMVC\get($tag,'name'));
-            $plug['option'] = $tag;
-            $plug->cookViewForward($go, $f);
-            $enabled[] = $tag['name'];
-       }
-       $go->set('enabled', $enabled);
-       \PMVC\plug(_RUN_APP)['type'] = 'view';
-       return $go;
+        $go = $m['view'];
+        $tags = self::getTags($go, $f);
+        $enabled = [];
+        foreach ($tags as $tag) {
+             if (empty($tag['enabled'])) {
+                 continue;
+             }
+             $plug = \PMVC\plug('lucency_'.\PMVC\get($tag,'name'));
+             $plug['option'] = $tag;
+             $plug->cookViewForward($go, $f);
+             $enabled[] = $tag['name'];
+        }
+        $go->set('enabled', $enabled);
+        $go->set('event', $enabled);
+        $go->set('event', \PMVC\value(
+            $f,
+            ['params', 'event'],
+            LUCENCY_EVENT_VIEW
+        ));
+        \PMVC\plug(_RUN_APP)['type'] = 'view';
+        return $go;
     }
 
     static function action ($m, $f)
     {
-       $go = $m['action'];
-       $tags = self::getTags($go, $f);
-       $action = \PMVC\value(
+        $go = $m['action'];
+        $tags = self::getTags($go, $f);
+        $action = \PMVC\value(
+             $f,
+             ['params', 'action'],
+             LUCENCY_DEFAULT_ACTION
+        );
+        $enabled = [];
+        foreach ($tags as $tag) {
+             if (empty($tag['enabled'])) {
+                 continue;
+             }
+             $plug = \PMVC\plug('lucency_'.\PMVC\get($tag,'name'));
+             $plug['option'] = $tag;
+             $plug->cookActionForward($go, $f, $action);
+             $enabled[] = $tag['name'];
+        }
+        $go->set('enabled', $enabled);
+        $go->set('action', $action);
+        $go->set('event', \PMVC\value(
             $f,
-            ['params','action'],
-            'ViewContent'
-       );
-       $go->set('action', $action);
-       $enabled = [];
-       foreach ($tags as $tag) {
-            if (empty($tag['enabled'])) {
-                continue;
-            }
-            $plug = \PMVC\plug('lucency_'.\PMVC\get($tag,'name'));
-            $plug['option'] = $tag;
-            $plug->cookActionForward($go, $f, $action);
-            $enabled[] = $tag['name'];
-       }
-       $go->set('enabled', $enabled);
-       \PMVC\plug(_RUN_APP)['type'] = 'action';
-       return $go;
+            ['params', 'event'],
+            LUCENCY_EVENT_ACTION
+        ));
+        \PMVC\plug(_RUN_APP)['type'] = 'action';
+        return $go;
     }
 }

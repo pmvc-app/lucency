@@ -1,5 +1,5 @@
 <?php
-namespace PMVC\App\hello_app;
+namespace PMVC\App\lucency;
 
 use PHPUnit_Framework_TestCase;
 
@@ -34,8 +34,41 @@ class LucyTest extends PHPUnit_Framework_TestCase
         $c->setAppAction('view');
         $c->plugApp(['../']);
         $result = $c->process();
-        $actual = \PMVC\value($result,[0])->get('text');
+        $actual = \PMVC\get($result,'0')->get('text');
         $this->assertNull($actual);
+    }
+
+    function testDefaultActionEvent()
+    {
+        $c = \PMVC\plug('controller');
+        $c->setApp($this->_app);
+        $c->setAppAction('action');
+        $c->plugApp(['../']);
+        $result = $c->process();
+        $actual = \PMVC\get($result,'0')->get('event');
+        $this->assertEquals(
+            LUCENCY_EVENT_ACTION,
+            $actual
+        );
+        $action = \PMVC\get($result,'0')->get('action');
+        $this->assertEquals(
+            LUCENCY_DEFAULT_ACTION,
+            $action
+        );
+    }
+
+    function testDefaultViewEvent()
+    {
+        $c = \PMVC\plug('controller');
+        $c->setApp($this->_app);
+        $c->setAppAction('view');
+        $c->plugApp(['../']);
+        $result = $c->process();
+        $actual = \PMVC\get($result,'0')->get('event');
+        $this->assertEquals(
+            LUCENCY_EVENT_VIEW,
+            $actual
+        );
     }
 }
 

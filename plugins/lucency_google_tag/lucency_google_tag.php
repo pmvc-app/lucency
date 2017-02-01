@@ -4,9 +4,6 @@ namespace PMVC\App\lucency;
 ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.
     '\lucency_google_tag';
 
-const GTAG_CUSTOM_EVENT = 'customEvent';
-const GTAG_CUSTOM_VIEW = 'customView';
-
 class lucency_google_tag extends \PMVC\Plugin
 {
     public function initCook($forward, $form)
@@ -18,8 +15,7 @@ class lucency_google_tag extends \PMVC\Plugin
             $params,
             $bucketParams,
             [
-               'label'=>\PMVC\get($params, 'label', json_encode($params) ),
-               'event'=>\PMVC\get($params, 'event', GTAG_CUSTOM_VIEW),
+               'label'=>\PMVC\get($params, 'label', json_encode($params) )
             ]
        );
     }
