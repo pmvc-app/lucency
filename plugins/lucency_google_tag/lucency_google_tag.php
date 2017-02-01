@@ -15,7 +15,8 @@ class lucency_google_tag extends \PMVC\Plugin
             $params,
             $bucketParams,
             [
-               'label'=>\PMVC\get($params, 'label', json_encode($params) )
+               'label' => \PMVC\get( $params, 'label', json_encode($params) ),
+               'event' => $this['event']
             ]
        );
     }

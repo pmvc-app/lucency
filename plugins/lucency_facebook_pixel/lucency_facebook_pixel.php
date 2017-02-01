@@ -17,7 +17,9 @@ class lucency_facebook_pixel extends \PMVC\Plugin
        $query->id = \PMVC\value($this,['option','id']);
        $query->r = time();
        $query->dl = $form['url'];
-       $query->cd = \PMVC\get($form, 'params');
+       $params = \PMVC\get($form, 'params', []);
+       $params['event'] = $this['event'];
+       $query->cd = $params;
        return $pixelUrl;
     }
 
