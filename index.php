@@ -100,7 +100,11 @@ class Lucency extends PMVC\Action
         $event = \PMVC\value(
             $f,
             ['params', 'event'],
-            LUCENCY_EVENT_VIEW
+            \PMVC\get(
+                \PMVC\option('lucency'),
+                LUCENCY_EVENT_VIEW, 
+                LUCENCY_EVENT_VIEW
+            )
         );
         $enabled = [];
         foreach ($tags as $tag) {
@@ -126,7 +130,15 @@ class Lucency extends PMVC\Action
         $tags = self::getTags($go, $f);
         $params =& \PMVC\ref($f->params);
         $action = \PMVC\get($params, 'action', LUCENCY_DEFAULT_ACTION);
-        $event  = \PMVC\get($params, 'event', LUCENCY_EVENT_ACTION);
+        $event  = \PMVC\get(
+            $params,
+            'event',
+            \PMVC\get(
+                \PMVC\option('lucency'),
+                LUCENCY_EVENT_ACTION, 
+                LUCENCY_EVENT_ACTION
+            )
+        );
         $enabled = [];
         foreach ($tags as $tag) {
              if (empty($tag['enabled'])) {
