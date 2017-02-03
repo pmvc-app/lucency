@@ -8,7 +8,6 @@ const FB_PIXEL_URL = 'https://www.facebook.com/tr?noscript=1';
 
 class lucency_facebook_pixel extends \PMVC\Plugin
 {
-
     public function initPixel($form)
     {
        $pixelUrl = FB_PIXEL_URL;
@@ -19,8 +18,21 @@ class lucency_facebook_pixel extends \PMVC\Plugin
        $query->dl = $form['url'];
        $params = \PMVC\get($form, 'params', []);
        $params['event'] = $this['event'];
-       $query->cd = $params;
-       return $pixelUrl;
+
+        //product
+        $product = \PMVC\value($params, [
+            'ecommerce',
+            'click',
+            'products',
+            0
+        ]);
+        if ($product) {
+            unset($params['ecommerce']);
+            $params['content_ids'] = \PMVC\get($product, 'id');
+            $params['content_type'] = 'product';
+        }
+        $query->cd = $params;
+        return $pixelUrl;
     }
 
     public function cookViewForward($forward, $form)
