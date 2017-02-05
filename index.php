@@ -19,13 +19,24 @@ $b->addForward('view', [
 ]);
 
 $b->addForward('action', [ 
-    _TYPE => 'view'
+    _PATH => 'lucencyAction'
+    ,_TYPE => 'view'
     ,_ACTION=> 'store'
 ]);
 
+/* Events */
 const LUCENCY_EVENT_VIEW = 'lucencyEventView';
 const LUCENCY_EVENT_ACTION = 'lucencyEventAction';
-const LUCENCY_DEFAULT_ACTION = 'ViewContent';
+/* Actions */
+const LUCENCY_ACTION_DEFAULT = 'ViewContent';
+const LUCENCY_ACTION_SEARCH = 'Search';
+const LUCENCY_ACTION_ADD_TO_CART = 'AddToCart';
+const LUCENCY_ACTION_ADD_TO_WISHLIST = 'AddToWishlist';
+const LUCENCY_ACTION_INITIATE_CHECKOUT = 'InitiateCheckout';
+const LUCENCY_ACTION_ADD_PAYMENT_INFO = 'AddPaymentInfo';
+const LUCENCY_ACTION_PURCHASE = 'Purchase';
+const LUCENCY_ACTION_LEAD = 'Lead';
+const LUCENCY_ACTION_COMPLETE_REGISTRATION = 'CompleteRegistration';
 
 class Lucency extends PMVC\Action
 {
@@ -129,7 +140,7 @@ class Lucency extends PMVC\Action
         $go = $m['action'];
         $tags = self::getTags($go, $f);
         $params =& \PMVC\ref($f->params);
-        $action = \PMVC\get($params, 'action', LUCENCY_DEFAULT_ACTION);
+        $action = \PMVC\get($params, 'action', LUCENCY_ACTION_DEFAULT);
         $event  = \PMVC\get(
             $params,
             'event',
