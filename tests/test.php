@@ -52,7 +52,7 @@ class LucyTest extends PHPUnit_Framework_TestCase
         );
         $action = \PMVC\get($result,'0')->get('action');
         $this->assertEquals(
-            LUCENCY_DEFAULT_ACTION,
+            LUCENCY_ACTION_DEFAULT,
             $action
         );
     }

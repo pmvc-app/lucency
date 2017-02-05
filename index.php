@@ -63,12 +63,13 @@ class Lucency extends PMVC\Action
 
     static function getTags($go, $f)
     {
-       ignore_user_abort(true);
-       $f['buckets'] = self::assignBucket(self::getBuckets());
-       $go->set('b', \PMVC\get($_COOKIE, 'b'));
-       $lucencyOption = \PMVC\getOption('lucency');
-       $tags = \PMVC\get($lucencyOption,'tags', []);
-       return $tags;
+        ignore_user_abort(true);
+        $f['buckets'] = self::assignBucket(self::getBuckets());
+        $go->set('b', \PMVC\get($_COOKIE, 'b'));
+        $go->set('disableIframe', \PMVC\get($f, 'if', false));
+        $lucencyOption = \PMVC\getOption('lucency');
+        $tags = \PMVC\get($lucencyOption,'tags', []);
+        return $tags;
     }
 
     static function store ($m, $f)
@@ -129,7 +130,6 @@ class Lucency extends PMVC\Action
              $enabled[] = $tag['name'];
         }
         $go->set('enabled', $enabled);
-        $go->set('event', $enabled);
         $go->set('event', $event);
         \PMVC\plug(_RUN_APP)['type'] = 'view';
         return $go;
@@ -162,8 +162,8 @@ class Lucency extends PMVC\Action
              $enabled[] = $tag['name'];
         }
         $go->set('enabled', $enabled);
-        $go->set('action', $action);
         $go->set('event', $event);
+        $go->set('action', $action);
         \PMVC\plug(_RUN_APP)['type'] = 'action';
         return $go;
     }
