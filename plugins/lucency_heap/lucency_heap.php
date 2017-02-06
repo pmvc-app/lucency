@@ -1,32 +1,68 @@
 <?php
 namespace PMVC\App\lucency;
 
+use PMVC\ActionForward;
+use PMVC\ActionForm;
+
 ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.
     '\lucency_heap';
 
-class lucency_heap extends \PMVC\Plugin
+class lucency_heap extends BaseTagPlugin
 {
-
-    public function cookViewForward($forward, $form)
-    {
-        $forward->set('heapId', \PMVC\value($this,['option','id']));
-        $forward->set(
-             'heapProperties',
-             \PMVC\get($form, 'buckets') 
-        );
-        $params = \PMVC\get($form, 'params', []);
-        $forward->set('heapParams', $params); 
+    public function initCook(
+        ActionForward $forward,
+        ActionForm $form
+    ) {
     }
 
-    public function cookActionForward($forward, $form, $action)
-    {
-        $params = \PMVC\get($form, 'params', []);
-        $params = array_merge(
-            \PMVC\get($form, 'params', []),
+    public function cookViewForward(
+        ActionForward $forward,
+        ActionForm $form
+    ) {
+        $events = [
             [
-                'action' => $action
+                'event'=>$this['event']
             ]
-        );
-        $forward->set('heapParams', $params); 
+        ];
+        $params = \PMVC\get($form, 'params', []);
+        $data = [
+            'id'=>\PMVC\value($this,['option','id']),
+            'properties'=>\PMVC\get($form, 'buckets'),
+            'params'=>$params,
+            'events'=>\PMVC\get($params, 'events', $events)
+        ];
+        $forward->append([
+            'data'=> [
+                'lucency'=> [
+                    $this['option']['name']=>
+                    $data
+                ]
+            ]
+        ]);
+    }
+
+    public function cookActionForward(
+        ActionForward $forward,
+        ActionForm $form,
+        $action
+    ) {
+        $events = [
+            [
+                'event'=>$action
+            ]
+        ];
+        $params = \PMVC\get($form, 'params', []);
+        $data = [
+            'params'=>$params,
+            'events'=>\PMVC\get($params, 'events', $events)
+        ];
+        $forward->append([
+            'data'=> [
+                'lucency'=> [
+                    $this['option']['name']=>
+                    $data
+                ]
+            ]
+        ]);
     }
 }

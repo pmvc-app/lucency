@@ -3,6 +3,8 @@ namespace PMVC\App\lucency;
 
 use PMVC;
 
+\PMVC\l(__DIR__.'/src/BaseTagPlugin.php');
+
 $b = new PMVC\MappingBuilder();
 ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.'\Lucency';
 ${_INIT_CONFIG}[_INIT_BUILDER] = $b;
@@ -126,6 +128,7 @@ class Lucency extends PMVC\Action
              $plug = \PMVC\plug('lucency_'.\PMVC\get($tag,'name'));
              $plug['option'] = $tag;
              $plug['event'] = $event;
+             $plug->initCook($go, $f);
              $plug->cookViewForward($go, $f);
              $enabled[] = $tag['name'];
         }
@@ -158,6 +161,7 @@ class Lucency extends PMVC\Action
              $plug = \PMVC\plug('lucency_'.\PMVC\get($tag,'name'));
              $plug['option'] = $tag;
              $plug['event'] = $event;
+             $plug->initCook($go, $f);
              $plug->cookActionForward($go, $f, $action);
              $enabled[] = $tag['name'];
         }
