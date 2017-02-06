@@ -67,6 +67,7 @@ class Lucency extends PMVC\Action
     {
         ignore_user_abort(true);
         $f['buckets'] = self::assignBucket(self::getBuckets());
+        $f['landingUrl'] = \PMVC\plug('url')->getUrl($f['url']);
         $go->set('b', \PMVC\get($_COOKIE, 'b'));
         $go->set('disableIframe', \PMVC\get($f, 'if', false));
         $lucencyOption = \PMVC\getOption('lucency');

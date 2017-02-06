@@ -25,9 +25,14 @@ class lucency_heap extends BaseTagPlugin
             ]
         ];
         $params = \PMVC\get($form, 'params', []);
+        $properties = \PMVC\get($form, 'buckets');
+        $gclid = \PMVC\value($form, ['landingUrl', 'query', 'gclid']);
+        if ($gclid) {
+            $properties['gclid'] = $gclid;
+        }
         $data = [
             'id'=>\PMVC\value($this,['option','id']),
-            'properties'=>\PMVC\get($form, 'buckets'),
+            'properties'=>$properties,
             'params'=>$params,
             'events'=>\PMVC\get($params, 'events', $events)
         ];
