@@ -22,10 +22,23 @@ class lucency_google_tag extends BaseTagPlugin
             $params,
             $bucketParams,
             [
-               'label' => \PMVC\get( $params, 'label', json_encode($params) ),
+               'label' => $this->getLabel($params),
                'event' => $this['event']
             ]
        );
+    }
+
+    public function getLabel($params)
+    {
+       $label = \PMVC\get($params, 'lebel'); 
+       if (empty($label)) {
+           $_ = \PMVC\plug('underscore');
+           $querys = $_->array()->toQuery($params);
+           $label = join('&',array_map(function($k, $v){
+            return $k.'='.$v;
+           }, array_keys($querys), $querys));
+       }
+       return $label;
     }
 
     public function cookViewForward(
