@@ -24,7 +24,11 @@ class lucency_heap extends BaseTagPlugin
                 'event'=>$this['event']
             ]
         ];
+        $speed = \PMVC\get($form, 'sp', []);
         $params = \PMVC\get($form, 'params', []);
+        if ($speed) {
+            $params['speed'] = $speed;
+        }
         $properties = \PMVC\get($form, 'buckets');
         $gclid = \PMVC\value($form, ['landingUrl', 'query', 'gclid']);
         if ($gclid) {
