@@ -15,15 +15,17 @@ class lucency_google_tag extends BaseTagPlugin
         ActionForward $forward,
         ActionForm $form
     ) {
+       $options = $this['option'];
        $params = \PMVC\get($form, 'params', []);
        $bucketParams = \PMVC\get($form, 'buckets', []);
-       $forward->set('gtagEnv', \PMVC\value($this, ['option', 'env']));
+       $forward->set('gtagEnv', \PMVC\get($options, 'env'));
        $this->_params = array_merge(
             $params,
             $bucketParams,
             [
                'label' => $this->getLabel($params),
-               'event' => $this['event']
+               'event' => $this['event'],
+               'gaId'  => \PMVC\get($options, 'gaId'),
             ]
        );
     }
