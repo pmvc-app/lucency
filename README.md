@@ -7,6 +7,12 @@
 PMVC lucency growth hacking app 
 ===============
 
+## disableIframe
+   * What is it?
+      * When lucency top frame not in same domain, we need prevent lucency to extra top frame data because corssdomain issue.
+   * default: false
+   * pass with GET ?if=1 -> disableIframe equal true 
+
 ## Install with Composer
 ### 1. Download composer
    * mkdir test_folder
