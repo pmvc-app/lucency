@@ -9,10 +9,17 @@ ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.
 
 class lucency_heap extends BaseTagPlugin
 {
+
+    private $_params;
+
     public function initCook(
         ActionForward $forward,
         ActionForm $form
     ) {
+        $params = \PMVC\get($form, 'params', []);
+        $params['pvid'] = \PMVC\get($form, 'pvid', []);
+
+        $this->_params = $params;
     }
 
     public function cookViewForward(
@@ -24,8 +31,8 @@ class lucency_heap extends BaseTagPlugin
                 'event'=>$this['event']
             ]
         ];
+        $params = $this->_params;
         $speed = \PMVC\get($form, 'sp', []);
-        $params = \PMVC\get($form, 'params', []);
         if ($speed) {
             $params['speed'] = $speed;
         }
@@ -60,7 +67,7 @@ class lucency_heap extends BaseTagPlugin
                 'event'=>$action
             ]
         ];
-        $params = \PMVC\get($form, 'params', []);
+        $params = $this->_params;
         $data = [
             'params'=>$params,
             'events'=>\PMVC\get($params, 'events', $events)

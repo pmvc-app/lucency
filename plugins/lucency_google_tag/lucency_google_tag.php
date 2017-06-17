@@ -11,12 +11,14 @@ class lucency_google_tag extends BaseTagPlugin
 {
 
     private $_params;
+
     public function initCook(
         ActionForward $forward,
         ActionForm $form
     ) {
        $options = $this['option'];
        $params = \PMVC\get($form, 'params', []);
+       $params['pvid'] = \PMVC\get($form, 'pvid');
        $bucketParams = \PMVC\get($form, 'buckets', []);
        $forward->set('gtagEnv', \PMVC\get($options, 'env'));
        $this->_params = array_merge(

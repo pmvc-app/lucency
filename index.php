@@ -42,9 +42,17 @@ const LUCENCY_ACTION_COMPLETE_REGISTRATION = 'CompleteRegistration';
 
 class Lucency extends PMVC\Action
 {
-    static function index ($m, $f)
+    static function getBuckets()
     {
-        return null;
+        $bucketKey = 'HTTP_X_BUCKET_TESTS';
+        $buckets = \PMVC\plug('getenv')->get($bucketKey);
+        $buckets = array_diff(explode(',',$buckets),['']);
+        $results = [];
+        foreach ($buckets as $b) {
+            $bkey = preg_split('/[\d|N]/', $b);
+            $results[$bkey[0]] = $b; 
+        }
+        return $results;
     }
 
     static function assignBucket(array $buckets)
@@ -75,6 +83,11 @@ class Lucency extends PMVC\Action
         return $tags;
     }
 
+    static function index ($m, $f)
+    {
+        return null;
+    }
+
     static function store ($m, $f)
     {
         $api = \PMVC\getOption('middlewareHost');
@@ -93,19 +106,6 @@ class Lucency extends PMVC\Action
         ]);
         $curl->process();
         return;
-    }
-
-    static function getBuckets()
-    {
-        $bucketKey = 'HTTP_X_BUCKET_TESTS';
-        $buckets = \PMVC\plug('getenv')->get($bucketKey);
-        $buckets = array_diff(explode(',',$buckets),['']);
-        $results = [];
-        foreach ($buckets as $b) {
-            $bkey = preg_split('/[\d|N]/', $b);
-            $results[$bkey[0]] = $b; 
-        }
-        return $results;
     }
 
     static function view ($m, $f)

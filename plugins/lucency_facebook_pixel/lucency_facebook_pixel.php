@@ -11,22 +11,19 @@ const FB_PIXEL_URL = 'https://www.facebook.com/tr?noscript=1';
 
 class lucency_facebook_pixel extends BaseTagPlugin
 {
+    private $_pixelUrl;
+
     public function initCook(
         ActionForward $forward,
         ActionForm $form
     ) {
-
-    }
-
-    public function initPixel($form)
-    {
-       $pixelUrl = FB_PIXEL_URL;
-       $pixelUrl = \PMVC\plug('url')->getUrl($pixelUrl);
-       $query = $pixelUrl->query;
+       $this->_pixelUrl = \PMVC\plug('url')->getUrl(FB_PIXEL_URL);
+       $query = $this->_pixelUrl->query;
        $query->id = \PMVC\value($this,['option','id']);
        $query->r = time();
        $query->dl = $form['url'];
        $params = \PMVC\get($form, 'params', []);
+       $params['pvid'] = \PMVC\get($form, 'pvid', []);
        $params['event'] = $this['event'];
 
         //product
@@ -42,14 +39,13 @@ class lucency_facebook_pixel extends BaseTagPlugin
             $params['content_type'] = 'product';
         }
         $query->cd = $params;
-        return $pixelUrl;
     }
 
     public function cookViewForward(
         ActionForward $forward,
         ActionForm $form
     ) {
-       $pixelUrl = $this->initPixel($form);
+       $pixelUrl = $this->_pixelUrl;
        $query = $pixelUrl->query;
        $query->ev = 'PageView';
        $forward->set('fbPixelUrl', (string)$pixelUrl);
@@ -60,7 +56,7 @@ class lucency_facebook_pixel extends BaseTagPlugin
         ActionForm $form,
         $action
     ) {
-       $pixelUrl = $this->initPixel($form);
+       $pixelUrl = $this->_pixelUrl;
        $query = $pixelUrl->query;
        $query->ev = $action;
        $forward->set('fbPixelUrl', (string)$pixelUrl);
