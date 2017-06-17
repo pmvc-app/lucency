@@ -18,6 +18,8 @@ PMVC lucency growth hacking app
    * https://github.com/pmvc-theme/lucency_html
 ### Lucency interaction package (fire beacon from client side)
    * https://github.com/react-atomic/react-atomic-organism/tree/master/packages/organism-react-i13n
+### Lucency plugin (for assign pvid)
+   * https://github.com/pmvc-plugin/lucency
 
 ## How to log startup time
 1. Log start up time in very begin.
