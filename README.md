@@ -13,6 +13,25 @@ PMVC lucency growth hacking app
    * default: false
    * pass with GET ?if=1 -> disableIframe equal true 
 
+## Lucency family
+### Lucency Template for call remote app (GA, FB Pixel, Heap)
+   * https://github.com/pmvc-theme/lucency_html
+### Lucency interaction package (fire beacon from client side)
+   * https://github.com/react-atomic/react-atomic-organism/tree/master/packages/organism-react-i13n
+
+## How to log startup time
+1. Log start up time in very begin.
+```
+<head>
+<script>var startUpTime=new Date().getTime()</script>
+<!-- ... your code -->
+</head>
+```
+2. Beacon will auto fire with view beacon
+https://github.com/react-atomic/react-atomic-organism/blob/7130aa7402c09ae25da281b39b41b102dddaaff4/packages/organism-react-i13n/ui/organisms/I13nElement.jsx#L134-L136
+
+
+
 ## Install with Composer
 ### 1. Download composer
    * mkdir test_folder
