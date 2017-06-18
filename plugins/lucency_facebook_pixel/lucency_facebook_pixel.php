@@ -24,6 +24,7 @@ class lucency_facebook_pixel extends BaseTagPlugin
        $query->dl = $form['url'];
        $params = \PMVC\get($form, 'params', []);
        $params['pvid'] = \PMVC\get($form, 'pvid', []);
+       $params['buckets'] = \PMVC\get($form, 'buckets', []);
        $params['event'] = $this['event'];
 
         //product
