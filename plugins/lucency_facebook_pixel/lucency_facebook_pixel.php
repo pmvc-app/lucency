@@ -13,6 +13,27 @@ class lucency_facebook_pixel extends BaseTagPlugin
 {
     private $_pixelUrl;
 
+    private function _processEcommerce(&$params)
+    {
+        $ecommerce = \PMVC\get($params, 'ecommerce');
+        if (!$ecommerce) {
+            return;
+        }
+        $keys = ['click', 'detail', 'add'];
+        foreach ($keys as $key) {
+            if (isset($ecommerce[$key])) {
+                $product = \PMVC\value($ecommerce, [$key, 'products', 0]);
+                break;
+            }
+        }
+        if (!isset($product)) {
+            return;
+        }
+        unset($params['ecommerce']);
+        $params['content_ids'] = \PMVC\get($product, 'id');
+        $params['content_type'] = 'product';
+    }
+
     public function initCook(
         ActionForward $forward,
         ActionForm $form
@@ -28,17 +49,7 @@ class lucency_facebook_pixel extends BaseTagPlugin
        $params['event'] = $this['event'];
 
         //product
-        $product = \PMVC\value($params, [
-            'ecommerce',
-            'click',
-            'products',
-            0
-        ]);
-        if ($product) {
-            unset($params['ecommerce']);
-            $params['content_ids'] = \PMVC\get($product, 'id');
-            $params['content_type'] = 'product';
-        }
+        $this->_processEcommerce($params);
         $query->cd = $params;
     }
 

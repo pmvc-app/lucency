@@ -17,7 +17,14 @@ class lucency_heap extends BaseTagPlugin
         ActionForm $form
     ) {
         $params = \PMVC\get($form, 'params', []);
-        $params['pvid'] = \PMVC\get($form, 'pvid', []);
+        $params = array_merge(
+            $params,
+            [
+                'pvid' => \PMVC\get($form, 'pvid', []),
+                'hour' => date('H'),
+                'week' => date('w'),
+            ]
+        );
 
         $this->_params = $params;
     }
