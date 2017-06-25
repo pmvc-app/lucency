@@ -46,10 +46,9 @@ class lucency_facebook_pixel extends BaseTagPlugin
        $params = \PMVC\get($form, 'params', []);
        $params['pvid'] = \PMVC\get($form, 'pvid', []);
        $params['buckets'] = \PMVC\get($form, 'buckets', []);
-       $params['event'] = $this['event'];
-
         //product
         $this->_processEcommerce($params);
+        $params['event'] = $this['event'];
         $query->cd = $params;
     }
 
@@ -70,6 +69,14 @@ class lucency_facebook_pixel extends BaseTagPlugin
     ) {
        $pixelUrl = $this->_pixelUrl;
        $query = $pixelUrl->query;
+       if (LUCENCY_ACTION_DEFAULT===$action) {
+           if (empty($query->cd['content_ids']) ||
+               empty($query->cd['content_type'])
+           ) {
+               // hack for fb pixel verify
+               $action .= 'Lucency';
+           }
+       }
        $query->ev = $action;
        $forward->set('fbPixelUrl', (string)$pixelUrl);
     }
