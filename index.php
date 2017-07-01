@@ -74,12 +74,17 @@ class Lucency extends PMVC\Action
     static function getTags($go, $f)
     {
         ignore_user_abort(true);
+        $pCookie = \PMVC\plug('cookie');
         $f['buckets'] = self::assignBucket(self::getBuckets());
         $f['landingUrl'] = \PMVC\plug('url')->getUrl($f['url']);
-        $go->set('b', \PMVC\get($_COOKIE, 'b'));
+        if (!is_array($f['params'])) {
+            $f['params'] = \PMVC\toArray($f['params']);
+        }
+        $f['params']['UTM'] = $pCookie->get('UTM');
+        $go->set('b', $pCookie->get('b'));
         $go->set('disableIframe', \PMVC\get($f, 'if', false));
-        $lucencyOption = \PMVC\getOption('lucency');
-        $tags = \PMVC\get($lucencyOption,'tags', []);
+        $app = \PMVC\plug(_RUN_APP);
+        $tags = \PMVC\get($app,'tags', []);
         return $tags;
     }
 

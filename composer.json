@@ -13,7 +13,6 @@
     "require": {
         "pmvc/pmvc": "*",
         "pmvc-plugin/controller": "*",
-        "pmvc-plugin/view_html": "*",
         "pmvc-plugin/getenv": "*",
         "pmvc-plugin/curl": "*",
         "pmvc-plugin/url": "*",
