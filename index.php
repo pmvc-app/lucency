@@ -2,10 +2,13 @@
 namespace PMVC\App\lucency;
 
 use PMVC;
+use PMVC\ActionForward;
+use PMVC\ActionForm;
+use PMVC\MappingBuilder;
 
 \PMVC\l(__DIR__.'/src/BaseTagPlugin.php');
 
-$b = new PMVC\MappingBuilder();
+$b = new MappingBuilder();
 ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.'\Lucency';
 ${_INIT_CONFIG}[_INIT_BUILDER] = $b;
 
@@ -71,8 +74,15 @@ class Lucency extends PMVC\Action
         return $results;
     }
 
-    static function getTags($go, $f)
-    {
+    /**
+     * What different between assign value to $go and $f?
+     * $go -> will use in template only.
+     * $f -> will use in lucency plugin
+     */
+    static function getTags(
+        ActionForward $go,
+        ActionForm $f
+    ) {
         ignore_user_abort(true);
         $pCookie = \PMVC\plug('cookie');
         $f['buckets'] = self::assignBucket(self::getBuckets());
