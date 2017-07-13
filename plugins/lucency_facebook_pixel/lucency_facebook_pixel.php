@@ -32,6 +32,9 @@ class lucency_facebook_pixel extends BaseTagPlugin
         unset($params['ecommerce']);
         $params['content_ids'] = \PMVC\get($product, 'id');
         $params['content_type'] = 'product';
+        if (isset($product['name'])) {
+            $params['content_name'] = $product['name'];
+        }
     }
 
     public function initCook(
