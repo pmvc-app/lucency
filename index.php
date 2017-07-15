@@ -90,7 +90,10 @@ class Lucency extends PMVC\Action
         if (!is_array($f['params'])) {
             $f['params'] = \PMVC\toArray($f['params']);
         }
-        $f['params']['UTM'] = $pCookie->get('UTM');
+        $utm = $pCookie->get('UTM');
+        if (!empty($utm)) {
+            $f['params']['UTM'] = $utm;
+        }
         $go->set('b', $pCookie->get('b'));
         $go->set('disableIframe', \PMVC\get($f, 'if', false));
         $app = \PMVC\plug(_RUN_APP);
