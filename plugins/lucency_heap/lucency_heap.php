@@ -79,13 +79,9 @@ class lucency_heap extends BaseTagPlugin
             'params'=>$params,
             'events'=>\PMVC\get($params, 'events', $events)
         ];
-        $forward->append([
-            'data'=> [
-                'lucency'=> [
-                    $this['option']['name']=>
-                    $data
-                ]
-            ]
-        ]);
+        $this->append(
+            $forward,
+            $data
+        );
     }
 }

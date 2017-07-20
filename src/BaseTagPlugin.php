@@ -5,7 +5,7 @@ use PMVC\Plugin;
 use PMVC\ActionForward;
 use PMVC\ActionForm;
 
-abstract class BaseTagPlugin extends \PMVC\PlugIn
+abstract class BaseTagPlugin extends PlugIn
 {
     abstract public function initCook(
         ActionForward $forward,
@@ -20,4 +20,18 @@ abstract class BaseTagPlugin extends \PMVC\PlugIn
         ActionForm $form,
         $action
     );
+
+    protected function append(
+        ActionForward $forward,
+        array $data
+    ) {
+        $forward->append([
+            'data'=> [
+                'lucency'=> [
+                    $this['option']['name']=>
+                    $data
+                ]
+            ]
+        ]);
+    }
 }

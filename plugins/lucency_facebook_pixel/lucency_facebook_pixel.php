@@ -7,10 +7,9 @@ use PMVC\ActionForm;
 ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.
     '\lucency_facebook_pixel';
 
-const FB_PIXEL_URL = 'https://www.facebook.com/tr?noscript=1';
-
 class lucency_facebook_pixel extends BaseTagPlugin
 {
+    const FB_PIXEL_URL = 'https://www.facebook.com/tr?noscript=1';
     private $_pixelUrl;
 
     private function _processEcommerce(&$params)
@@ -41,7 +40,7 @@ class lucency_facebook_pixel extends BaseTagPlugin
         ActionForward $forward,
         ActionForm $form
     ) {
-       $this->_pixelUrl = \PMVC\plug('url')->getUrl(FB_PIXEL_URL);
+       $this->_pixelUrl = \PMVC\plug('url')->getUrl(self::FB_PIXEL_URL);
        $query = $this->_pixelUrl->query;
        $query->id = \PMVC\value($this,['option','id']);
        $query->r = time();

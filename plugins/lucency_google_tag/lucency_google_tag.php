@@ -1,11 +1,11 @@
 <?php
+
 namespace PMVC\App\lucency;
 
 use PMVC\ActionForward;
 use PMVC\ActionForm;
 
-${_INIT_CONFIG
-}[_CLASS] = __NAMESPACE__.
+${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.
     '\lucency_google_tag';
 
 class lucency_google_tag extends BaseTagPlugin
