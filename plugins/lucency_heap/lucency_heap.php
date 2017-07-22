@@ -48,6 +48,14 @@ class lucency_heap extends BaseTagPlugin
         if ($gclid) {
             $properties['gclid'] = $gclid;
         }
+        
+        //<!--- Set UTM
+        $utm = \PMVC\get($params, 'UTM');
+        if (!empty($utm)) {
+            $properties['utm'] = $utm;
+        }
+        // Set UTM -->
+
         $data = [
             'id'=>\PMVC\value($this,['option','id']),
             'properties'=>$properties,
