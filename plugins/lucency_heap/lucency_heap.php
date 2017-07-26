@@ -16,6 +16,7 @@ class lucency_heap extends BaseTagPlugin
         ActionForward $forward,
         ActionForm $form
     ) {
+        $pEnv = \PMVC\plug('getenv');
         $params = \PMVC\get($form, 'params', []);
         $params = array_merge(
             $params,
@@ -23,7 +24,8 @@ class lucency_heap extends BaseTagPlugin
                 'pvid' => \PMVC\get($form, 'pvid', []),
                 'hour' => date('H'),
                 'week' => date('w'),
-                'colo' => \PMVC\plug('getenv')->get('COLO'),
+                'colo' => $pEnv->get('COLO'),
+                'country' => $pEnv->get('COUNTRY'),
             ]
         );
 
