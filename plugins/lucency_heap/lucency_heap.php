@@ -12,16 +12,6 @@ class lucency_heap extends BaseTagPlugin
 
     private $_params;
 
-    private function _getColo()
-    {
-        $colo = \PMVC\plug('getenv')->get('CF-RAY');
-        \PMVC\d($colo);
-        if (!empty($colo)) {
-            $colo = \PMVC\value(explode('-', $colo), [1]);
-        }
-        return $colo;
-    }
-
     public function initCook(
         ActionForward $forward,
         ActionForm $form
@@ -33,7 +23,7 @@ class lucency_heap extends BaseTagPlugin
                 'pvid' => \PMVC\get($form, 'pvid', []),
                 'hour' => date('H'),
                 'week' => date('w'),
-                'colo' => $this->_getColo() 
+                'colo' => \PMVC\plug('getenv')->get('COLO'),
             ]
         );
 
