@@ -29,6 +29,8 @@ Each tag have own namespace under data->lucency->*tagname*
 ```
 $view->get('data')['lucency'][*tagname*]
 ```
+## disalbe canonical for facebook pixel debug
+?--no-canonical=1
 
 
 ## Install with Composer
