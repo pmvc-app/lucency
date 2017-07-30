@@ -61,7 +61,13 @@ class lucency_facebook_pixel extends BaseTagPlugin
        $pixelUrl = $this->_pixelUrl;
        $query = $pixelUrl->query;
        $query->ev = 'PageView';
-       $forward->set('fbPixelUrl', (string)$pixelUrl);
+       $data = [
+            'fbPixelUrl'=>(string)$pixelUrl
+       ];
+       $this->append(
+           $forward,
+           $data
+       );
     }
 
     public function cookActionForward(
@@ -80,6 +86,12 @@ class lucency_facebook_pixel extends BaseTagPlugin
            }
        }
        $query->ev = $action;
-       $forward->set('fbPixelUrl', (string)$pixelUrl);
+       $data = [
+            'fbPixelUrl'=>(string)$pixelUrl
+       ];
+       $this->append(
+           $forward,
+           $data
+       );
     }
 }

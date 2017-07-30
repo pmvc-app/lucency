@@ -132,6 +132,10 @@ class Lucency extends PMVC\Action
 
     static function view ($m, $f)
     {
+        if ('pixel'===$f['o']) {
+            $view =& \PMVC\getOption('view');
+            $view['engine']['lucency'] = 'lucency_pixel';
+        }
         $go = $m['view'];
         $tags = self::getTags($go, $f);
         $event = \PMVC\value(
@@ -163,6 +167,10 @@ class Lucency extends PMVC\Action
 
     static function action ($m, $f)
     {
+        if ('pixel'===$f['o']) {
+            \PMVC\plug('controller')[_VIEW_ENGINE] = 
+                'lucency_view_pixel';
+        }
         $go = $m['action'];
         $tags = self::getTags($go, $f);
         $params =& \PMVC\ref($f->params);
