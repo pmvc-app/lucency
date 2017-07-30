@@ -11,6 +11,7 @@ class lucency_facebook_pixel extends BaseTagPlugin
 {
     const FB_PIXEL_URL = 'https://www.facebook.com/tr?noscript=1';
     private $_pixelUrl;
+    private $_event;
 
     private function _processEcommerce(&$params)
     {
@@ -48,10 +49,18 @@ class lucency_facebook_pixel extends BaseTagPlugin
        $params = \PMVC\get($form, 'params', []);
        $params['pvid'] = \PMVC\get($form, 'pvid', []);
        $params['buckets'] = \PMVC\get($form, 'buckets', []);
-        //product
+
+        // Ecommerce
         $this->_processEcommerce($params);
-        $params['event'] = $this['event'];
+
         $query->cd = $params;
+
+        // get event
+        $event  = \PMVC\value($params, ['events', 0, 'event'] );
+        if (empty($event)) {
+            $event = $this['event'];
+        }
+        $this->_event = $event;
     }
 
     public function cookViewForward(
@@ -60,7 +69,7 @@ class lucency_facebook_pixel extends BaseTagPlugin
     ) {
        $pixelUrl = $this->_pixelUrl;
        $query = $pixelUrl->query;
-       $query->ev = 'PageView';
+       $query->ev = $this->_event;
        $data = [
             'fbPixelUrl'=>(string)$pixelUrl
        ];
