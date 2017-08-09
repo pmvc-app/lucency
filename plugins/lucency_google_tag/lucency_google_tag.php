@@ -12,33 +12,37 @@ class lucency_google_tag extends BaseTagPlugin
 {
 
     private $_params;
+    private $_configs;
 
     public function initCook(
         ActionForward $forward,
         ActionForm $form
     ) {
         $options = $this['option'];
-        $params = \PMVC\get($form, 'params', []);
-        $params['pvid'] = \PMVC\get($form, 'pvid');
+        $defaultLabel = \PMVC\get($form, 'params', []);
         $bucketParams = \PMVC\get($form, 'buckets', []);
-        $forward->set('gtagEnv', \PMVC\get($options, 'env'));
         $this->_params = array_merge(
-            $params,
+            $defaultLabel,
             $bucketParams,
             [
-               'label' => $this->getLabel($params),
-               'event' => $this['event'],
-               'gaId'  => \PMVC\get($options, 'gaId'),
+               'label'   => $this->getLabel($defaultLabel),
+               'event'   => $this['event'],
+               'gaId'    => \PMVC\get($options, 'gaId'),
+               'bCookie'=> $forward->get('b'),
+               'pvid'   => \PMVC\get($form, 'pvid')
             ]
         );
+        $this->_configs = [
+            'gtagEnv'=> \PMVC\get($options, 'env'),
+        ];
     }
 
     public function getLabel($params)
     {
         $label = \PMVC\get($params, 'lebel'); 
         if (empty($label)) {
+            unset($params['ecommerce']);
             $_ = \PMVC\plug('underscore');
-            unset($params['pvid']);
             $querys = $_->array()->toQuery($params);
             $label = join('&', array_map(
                 function ($k, $v) {
@@ -55,8 +59,17 @@ class lucency_google_tag extends BaseTagPlugin
         ActionForward $forward,
         ActionForm $form
     ) {
-        $forward->set('gtagId', \PMVC\value($this, ['option','id']));
-        $forward->set('gtagParams', $this->_params);
+        $data = array_merge(
+            $this->_configs,
+            [
+                'params' => $this->_params,
+                'id'     => \PMVC\value($this, ['option','id']),
+            ]
+        );
+        $this->append(
+            $forward,
+            $data
+        );
     }
 
     public function cookActionForward(
@@ -66,6 +79,15 @@ class lucency_google_tag extends BaseTagPlugin
     ) {
         $params = $this->_params;
         $params['action'] = $action;
-        $forward->set('gtagParams', $params);
+        $data = array_merge(
+            $this->_configs,
+            [
+                'params' => $this->_params,
+            ]
+        );
+        $this->append(
+            $forward,
+            $data
+        );
     }
 }
