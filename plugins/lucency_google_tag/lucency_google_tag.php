@@ -19,13 +19,12 @@ class lucency_google_tag extends BaseTagPlugin
         ActionForm $form
     ) {
         $options = $this['option'];
-        $defaultLabel = \PMVC\get($form, 'params', []);
+        $defaultParams = \PMVC\get($form, 'params', []);
         $bucketParams = \PMVC\get($form, 'buckets', []);
         $this->_params = array_merge(
-            $defaultLabel,
+            $defaultParams,
             $bucketParams,
             [
-               'label'   => $this->getLabel($defaultLabel),
                'event'   => $this['event'],
                'gaId'    => \PMVC\get($options, 'gaId'),
                'bCookie'=> $forward->get('b'),
@@ -37,7 +36,7 @@ class lucency_google_tag extends BaseTagPlugin
         ];
     }
 
-    public function getLabel($params)
+    public function getLabel(array $params)
     {
         $label = \PMVC\get($params, 'lebel'); 
         if (empty($label)) {
@@ -79,10 +78,13 @@ class lucency_google_tag extends BaseTagPlugin
     ) {
         $params = $this->_params;
         $params['action'] = $action;
+        $params['category'] = \PMVC\get($params, 'category');
+        $params['label'] = $this->getLabel(\PMVC\get($form, 'params', []));
+        $params['value'] = \PMVC\get($params, 'value');
         $data = array_merge(
             $this->_configs,
             [
-                'params' => $this->_params,
+                'params' => $params,
             ]
         );
         $this->append(
