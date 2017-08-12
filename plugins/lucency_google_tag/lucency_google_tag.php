@@ -26,9 +26,10 @@ class lucency_google_tag extends BaseTagPlugin
             $bucketParams,
             [
                'event'   => $this['event'],
-               'gaId'    => \PMVC\get($options, 'gaId'),
+               'gaId'    => \PMVC\get($options, 'gaId', '-'),
                'bCookie'=> $forward->get('b'),
-               'pvid'   => \PMVC\get($form, 'pvid')
+               'pvid'   => \PMVC\get($form, 'pvid', '-'),
+               'p'      => \PMVC\get($defaultParams, 'p', '-')
             ]
         );
         $this->_configs = [
@@ -77,10 +78,14 @@ class lucency_google_tag extends BaseTagPlugin
         $action
     ) {
         $params = $this->_params;
+        $params['ecommerce'] = \PMVC\get($params, 'ecommerce', '-');
         $params['action'] = $action;
-        $params['category'] = \PMVC\get($params, 'category');
+        $params['category'] = \PMVC\get($params, 'category', '-');
         $params['label'] = $this->getLabel(\PMVC\get($form, 'params', []));
         $params['value'] = \PMVC\get($params, 'value');
+        if (!is_numeric($params['value'])) {
+            $params['value'] = 0;
+        }
         $data = array_merge(
             $this->_configs,
             [
