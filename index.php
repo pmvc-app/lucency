@@ -161,6 +161,7 @@ class Lucency extends PMVC\Action
         }
         $go->set('enabled', $enabled);
         $go->set('event', $event);
+        $go->set('vpvid', \PMVC\plug('getenv')->get('UNIQUE_ID'));
         \PMVC\plug(_RUN_APP)['type'] = 'view';
         return $go;
     }
