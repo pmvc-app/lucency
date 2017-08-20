@@ -24,7 +24,7 @@ class lucency_heap extends BaseTagPlugin
                 'pvid' => \PMVC\get($form, 'pvid', []),
                 'hour' => date('H'),
                 'week' => date('w'),
-                'colo' => $pEnv->get('COLO'),
+                'cdn' => $pEnv->get('CDN'),
                 'country' => $pEnv->get('COUNTRY'),
             ]
         );
