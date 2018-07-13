@@ -21,11 +21,14 @@ class lucency_heap extends BaseTagPlugin
         $params = array_merge(
             $params,
             [
-                'pvid' => \PMVC\get($form, 'pvid', []),
+                'pvid' => \PMVC\get($form, 'pvid'),
                 'hour' => date('H'),
                 'week' => date('w'),
                 'cdn' => $pEnv->get('CDN'),
                 'country' => $pEnv->get('COUNTRY'),
+                'colo' => $pEnv->get('COLO'),
+                'market' => $pEnv->get('MARKET'),
+                'environment' => $pEnv->get('ENVIRONMENT'),
             ]
         );
 
