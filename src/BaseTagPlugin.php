@@ -1,7 +1,7 @@
 <?php
 namespace PMVC\App\lucency;
 
-use PMVC\Plugin;
+use PMVC\PlugIn;
 use PMVC\ActionForward;
 use PMVC\ActionForm;
 
