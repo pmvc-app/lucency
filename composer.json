@@ -18,5 +18,8 @@
         "pmvc-plugin/url": "*",
         "pmvc-theme/lucency_html": "*"
     },
+    "require-dev": {
+        "pmvc-plugin/unit": "*"
+    },
     "minimum-stability": "dev"
 }

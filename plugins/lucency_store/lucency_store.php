@@ -8,15 +8,14 @@ use DomainException;
 class lucency_store extends \PMVC\PlugIn
 {
     private $_guid;
-    private $_viewDb;
 
     public function init()
     {
         $this->_guid = \PMVC\plug('guid');
         /* Possibile use in caller */
-        $this['viewDb'] = $this->_guid->getDb('LucencyView');
-        $this['actionDb'] = $this->_guid->getDb('LucencyAction');
-        $this['mappingDb'] = $this->_guid->getDb('LucencyMapping');
+        $this['viewDb'] = $this->_guid->getModel('LucencyView');
+        $this['actionDb'] = $this->_guid->getModel('LucencyAction');
+        $this['mappingDb'] = $this->_guid->getModel('LucencyMapping');
     }
 
     private function beforeStore($f)

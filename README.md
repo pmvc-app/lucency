@@ -1,6 +1,6 @@
 [![Latest Stable Version](https://poser.pugx.org/pmvc-app/lucency/v/stable)](https://packagist.org/packages/pmvc-app/lucency) 
 [![Latest Unstable Version](https://poser.pugx.org/pmvc-app/lucency/v/unstable)](https://packagist.org/packages/pmvc-app/lucency) 
-[![Build Status](https://travis-ci.org/pmvc-app/lucency.svg?branch=master)](https://travis-ci.org/pmvc-app/lucency)
+[![CircleCI](https://circleci.com/gh/pmvc-app/lucency/tree/master.svg?style=svg)](https://circleci.com/gh/pmvc-app/lucency/tree/master)
 [![License](https://poser.pugx.org/pmvc-app/lucency/license)](https://packagist.org/packages/pmvc-app/lucency)
 [![Total Downloads](https://poser.pugx.org/pmvc-app/lucency/downloads)](https://packagist.org/packages/pmvc-app/lucency) 
 
